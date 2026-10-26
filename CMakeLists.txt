@@ -1,6 +1,6 @@
 include_directories("${CMAKE_CURRENT_LIST_DIR}")
 
-set(LOVYANGFX_DIR "/mnt/nvme-990/dietpi_userdata/esphome/lib/LovyanGFX")
+set(LOVYANGFX_DIR "~/esphome/lib/LovyanGFX")
 
 if(EXISTS "${LOVYANGFX_DIR}/src")
 
