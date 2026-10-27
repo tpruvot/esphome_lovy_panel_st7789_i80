@@ -109,6 +109,7 @@ light:
 # TP_SCL  GPIO09 Touch the IIC clock
 # TP_RST  GPIO03 Touch reset, multiplexed with LCD reset
 
+
 lovy_panel_st7789_i80:
   id: display0
   update_interval: 1000ms
@@ -132,6 +133,7 @@ lovy_panel_st7789_i80:
     uint32_t blue  = 0x00007F;
     uint32_t green = 0x00CF00;
     uint32_t white = 0xCFCFCF;
+    uint32_t gray  = 0x6F6F6F;
 
     d.clear(TFT_BLACK);
     // outline to check dimensions
@@ -144,42 +146,73 @@ lovy_panel_st7789_i80:
     if (isnan(id(state_of_charge).get_state())) {
       // --- Waiting connection ---
       d.setTextColor(red, TFT_BLACK);
-      d.setCursor(80, 31);
+      d.setCursor(80, 30);
       d.printf("Waiting BMS %s", "${device_addr}");
 
       d.setTextColor(white, TFT_BLACK);
       auto ip = id(wifi_ip).state.c_str();
       if (strlen(ip)) {
-        d.setCursor(60, 55);
+        d.setCursor(60, 56);
         d.printf("IP: %s", ip);
       }
     } else {
       // --- Connected ---
-      d.setTextColor(green, TFT_BLACK);
-      d.setCursor(80, 31);
-      d.printf("SOC: %.0f%%", id(state_of_charge).get_raw_state());
+      d.setTextSize(3);
+      d.setTextColor(green);
+      d.setCursor(30, 30);
+      d.printf("%.0f%%", id(state_of_charge).get_raw_state());
 
-      d.setTextColor(white, TFT_BLACK);
-      d.setCursor(80, 55);
-      d.printf("%.1fV", id(total_voltage).get_state());
+      d.setTextSize(2);
+      d.setTextColor(white);
+      d.setCursor(30, 60);
+      d.printf("T1  %.1f c", id(temperature_1).get_state());
+
+      d.setTextColor(white);
+      d.setCursor(30, 90);
+      d.printf("Mos %.1f c", id(mosfet_temperature).get_state());
+
+      d.setTextSize(3);
+      auto powr = id(total_power).get_state();
+      d.setTextColor(powr < 0 ? red : green);
+      d.setCursor(30, 180);
+      d.printf("%.0fW", abs(powr));
+
+      d.setTextSize(2);
+      auto curr = id(current).get_state();
+      d.setTextColor(curr < 0 ? red : green);
+      d.setCursor(30, 210);
+      d.printf("%.2fA", abs(curr));
+
+      d.setTextSize(3);
+      d.setTextColor(white);
+      d.setCursor(200, 30);
+      d.printf("%.1f V", id(total_voltage).get_state());
+
+      d.setTextSize(2);
+      d.setTextColor(gray);
+      d.setCursor(200, 60);
+      d.printf("%.3f V", id(average_cell_voltage).get_state());
+
+      d.setTextColor(gray);
+      d.setCursor(200, 90);
+      d.printf("~%.3fV", id(delta_cell_voltage).get_state());
     }
 
     // --- TOUCHSCREEN ---
-
-    d.drawRect(100, 120, 120, 40, white);
+    d.drawRect(180, 180, 120, 40, white);
     d.setTextDatum(MC_DATUM);
     d.setTextSize(2);
 
     // touch in the button
-    if (it->touched && it->tp.x >= 100 && it->tp.x <= 220 && it->tp.y >= 120 && it->tp.y <= 160) {
-      d.fillRect(100, 120, 120, 40, blue);
+    if (it->touched && it->tp.x > 180 && it->tp.x < 300 && it->tp.y > 180 && it->tp.y < 220) {
+      d.fillRect(180, 180, 120, 40, blue);
       d.setTextColor(TFT_BLACK);
-      d.drawString("CLIC !", 160, 140);
     } else {
-      d.drawString("TOUCH", 160, 140);
+      d.setTextColor(white);
     }
+    d.drawString("Select", 240, 200);
 
-    // touch Position
+    // debug touch position
     if (it->touched) {
       d.setTextSize(1);
       d.setTextColor(TFT_YELLOW);
@@ -1091,6 +1124,7 @@ sensor:
   - platform: modbus_controller
     modbus_controller_id: bms0
     name: "average cell voltage"
+    id: average_cell_voltage
     address: 0x1244
     reuse_previous_range: false
     register_type: holding
@@ -1106,6 +1140,7 @@ sensor:
   - platform: modbus_controller
     modbus_controller_id: bms0
     name: "delta cell voltage"
+    id: delta_cell_voltage
     address: 0x1246
     register_type: holding
     value_type: U_WORD
@@ -1336,6 +1371,7 @@ sensor:
   - platform: modbus_controller
     modbus_controller_id: bms0
     name: "mosfet temperature"
+    id: mosfet_temperature
     address: 0x128A
     # if some cells are commented
     reuse_previous_range: false
@@ -1368,6 +1404,7 @@ sensor:
   - platform: modbus_controller
     modbus_controller_id: bms0
     name: "power"
+    id: total_power
     address: 0x1294
     register_type: holding
     value_type: S_DWORD
@@ -1473,6 +1510,7 @@ sensor:
   - platform: modbus_controller
     modbus_controller_id: bms0
     name: "temperature sensor 1"
+    id: temperature_1
     address: 0x129C
     register_type: holding
     value_type: S_WORD
@@ -1788,19 +1826,18 @@ sensor:
   #     - multiply: 0.1
 
   # 0x12FC   248   INT16     2    R    TempBat 5       0.1℃
-  - platform: modbus_controller
-    modbus_controller_id: bms0
-    name: "temperature sensor 5"
-    id: mosfet_temperature
-    address: 0x12FC
-    register_type: holding
-    value_type: S_WORD
-    unit_of_measurement: "°C"
-    device_class: temperature
-    state_class: measurement
-    accuracy_decimals: 1
-    filters:
-      - multiply: 0.1
+  # - platform: modbus_controller
+  #   modbus_controller_id: bms0
+  #   name: "temperature sensor 5"
+  #   address: 0x12FC
+  #   register_type: holding
+  #   value_type: S_WORD
+  #   unit_of_measurement: "°C"
+  #   device_class: temperature
+  #   state_class: measurement
+  #   accuracy_decimals: 1
+  #   filters:
+  #     - multiply: 0.1
 
 # ----
 
