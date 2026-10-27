@@ -16,7 +16,7 @@ the pwm backlight from ESPHome, to avoid backlight when unused...
 
 Sample yaml is based on JK BMS modbus and show the display components integration to query a few entities.
 
-<img width="357" height="283" alt="JK-BMS-Sample" src="https://github.com/user-attachments/assets/aceaf7a1-fd01-41ad-bf71-705d464c8336" />
+<img width="356" height="247" alt="image" src="https://github.com/user-attachments/assets/8a962b0d-9bad-4bb0-ad8f-ea27a49e4b89" />
 
 Links
 -----
