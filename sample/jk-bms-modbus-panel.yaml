@@ -56,7 +56,7 @@ esphome:
   includes:
     - lovy_panel_st7789_i80/panel_st7789.hpp
   libraries:
-    - LovyanGFX= https://github.com/lovyan03/LovyanGFX@1.2.35
+    - LovyanGFX=https://github.com/lovyan03/LovyanGFX@1.2.35
 
 external_components:
   - source:
@@ -135,7 +135,7 @@ lovy_panel_st7789_i80:
 
     d.clear(TFT_BLACK);
     // outline to check dimensions
-    d.drawRect(0, 0, 320, 240, blue);
+    //d.drawRect(0, 0, 320, 240, blue);
 
     // Middle-Center alignment
     d.setTextDatum(MC_DATUM);
@@ -163,11 +163,15 @@ lovy_panel_st7789_i80:
       d.setTextSize(2);
       d.setTextColor(white);
       d.setCursor(30, 60);
-      d.printf("T1  %.1f c", id(temperature_1).get_state());
+      d.printf("BMS %.1f c", id(mosfet_temperature).get_state());
 
       d.setTextColor(white);
       d.setCursor(30, 90);
-      d.printf("Mos %.1f c", id(mosfet_temperature).get_state());
+      d.printf("BAT %.1f c", id(temperature_1).get_state());
+
+      d.setTextColor(gray);
+      d.setCursor(30, 120);
+      d.printf("T.2 %.1f c", id(temperature_2).get_state());
 
       d.setTextSize(3);
       auto powr = id(total_power).get_state();
@@ -184,40 +188,50 @@ lovy_panel_st7789_i80:
       d.setTextSize(3);
       d.setTextColor(white);
       d.setCursor(200, 30);
-      d.printf("%.1f V", id(total_voltage).get_state());
+      d.printf("%.2fV", id(total_voltage).get_state());
 
       d.setTextSize(2);
       d.setTextColor(gray);
       d.setCursor(200, 60);
-      d.printf("%.3f V", id(average_cell_voltage).get_state());
+      d.printf(" %.3f V", id(average_cell_voltage).get_state());
 
       d.setTextColor(gray);
       d.setCursor(200, 90);
-      d.printf("~%.3fV", id(delta_cell_voltage).get_state());
+      d.printf("~%.3f V", id(delta_cell_voltage).get_state());
+    }
+
+    // runtime
+    if (!isnan(id(total_runtime).state)) {
+      d.setTextSize(1);
+      d.setCursor(30, 235);
+      d.setTextColor(gray);
+      d.printf("BMS %s %s", "${device_addr}", id(runtime).state.c_str());
     }
 
     // --- TOUCHSCREEN ---
-    d.drawRect(180, 180, 120, 40, white);
+    d.drawRect(200, 180, 100, 40, blue);
     d.setTextDatum(MC_DATUM);
     d.setTextSize(2);
 
     // touch in the button
-    if (it->touched && it->tp.x > 180 && it->tp.x < 300 && it->tp.y > 180 && it->tp.y < 220) {
-      d.fillRect(180, 180, 120, 40, blue);
+    if (it->touched && it->tp.x > 200 && it->tp.x < 300 && it->tp.y > 180 && it->tp.y < 220) {
+      d.fillRect(200, 180, 100, 40, blue);
       d.setTextColor(TFT_BLACK);
+      id(backlight_output).set_level(0);
+      id(display_sleep) = true;
     } else {
       d.setTextColor(white);
     }
-    d.drawString("Select", 240, 200);
+    d.drawString("Ok", 250, 200);
 
     // debug touch position
-    if (it->touched) {
+    /*if (it->touched) {
       d.setTextSize(1);
       d.setTextColor(TFT_YELLOW);
       d.setCursor(10, 224);
       d.printf("Touch: X=%d, Y=%d", it->tp.x, it->tp.y);
       it->touched = false;
-    }
+    }*/
 
     // Send screen buffer at [0,0]
     it->startWrite();
@@ -1517,6 +1531,7 @@ sensor:
   - platform: modbus_controller
     modbus_controller_id: bms0
     name: "temperature sensor 2"
+    id: temperature_2
     address: 0x129E
     register_type: holding
     value_type: S_WORD
@@ -1907,6 +1922,7 @@ text_sensor:
 
   - platform: template
     name: "total runtime formatted"
+    id: runtime
     entity_category: diagnostic
     update_interval: 60s
     lambda: |-
