@@ -160,7 +160,7 @@ lovy_panel_st7789_i80:
       auto soc = id(state_of_charge).get_raw_state();
       d.setTextColor((soc > 50) ? green : (soc > 25) ? TFT_YELLOW : red);
       d.setCursor(20, 30);
-      d.printf("%.0f%%", soc);
+      d.printf("%.0f %%", soc);
 
       d.setTextSize(2);
       d.setTextColor(white);
@@ -175,22 +175,25 @@ lovy_panel_st7789_i80:
       d.setCursor(20, 120);
       d.printf("T.2 %.1f c", id(temperature_2).state);
 
+      auto watt = id(total_power).state;
+      auto amps = id(current).state;
+      auto color = (amps < 0) ? red : green;
+      if (amps == 0.) color = gray;
+
       d.setTextSize(3);
-      auto powr = id(total_power).state;
-      d.setTextColor(powr < 0 ? red : green);
+      d.setTextColor(color);
       d.setCursor(20, 180);
-      d.printf("%.0fW", abs(powr));
+      d.printf("%.0f W", abs(watt));
 
       d.setTextSize(2);
-      auto curr = id(current).state;
-      d.setTextColor(curr < 0 ? red : green);
+      d.setTextColor(color);
       d.setCursor(20, 210);
-      d.printf("%.2fA", abs(curr));
+      d.printf("%.2f A", abs(amps));
 
       d.setTextSize(3);
       d.setTextColor(white);
       d.setCursor(200, 30);
-      d.printf("%.2fV", id(total_voltage).state);
+      d.printf("%.1f V", id(total_voltage).state);
 
       d.setTextSize(2);
       d.setTextColor(gray);
@@ -204,7 +207,7 @@ lovy_panel_st7789_i80:
       if (id(balance_current).state != 0.) {
         d.setTextColor(cyan);
         d.setCursor(200, 120);
-        d.printf("Bal %.1f A", id(balance_current).state);
+        d.printf("Bal %.1f A", abs(id(balance_current).state));
       }
       if (id(alarms_bitmask).state > 0) {
         d.setTextColor(red);
@@ -216,7 +219,7 @@ lovy_panel_st7789_i80:
     // runtime
     if (!isnan(id(total_runtime).state)) {
       d.setTextSize(1);
-      d.setCursor(20, 235);
+      d.setCursor(20, 230);
       d.setTextColor(gray);
       d.printf("BMS %s %s", "${device_addr}", id(runtime).state.c_str());
     }
