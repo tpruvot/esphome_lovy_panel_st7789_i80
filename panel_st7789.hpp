@@ -132,7 +132,8 @@ public:
       if (res > 0) {
         this->touched = true;
         tp = points[0];
-        tp.x = tp.y; tp.y = points[0].x;
+        // adjust for the 270° rotation(3)
+        tp.x = 320 - tp.y; tp.y = points[0].x;
         ESP_LOGD("ST7789", "touch at %d/%d", tp.x, tp.y);
         this->update();
         this->touched = false;
