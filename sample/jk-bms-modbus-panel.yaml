@@ -127,7 +127,8 @@ lovy_panel_st7789_i80:
       sprite_ready = true;
     }
 
-    uint32_t red   = 0x7F0000;
+    uint32_t red   = 0x9F0000;
+    uint32_t cyan  = 0x007F70;
     uint32_t blue  = 0x00007F;
     uint32_t green = 0x00CF00;
     uint32_t white = 0xCFCFCF;
@@ -156,9 +157,10 @@ lovy_panel_st7789_i80:
     } else {
       // --- Connected ---
       d.setTextSize(3);
-      d.setTextColor(green);
+      auto soc = id(state_of_charge).get_raw_state();
+      d.setTextColor((soc > 50) ? green : (soc > 25) ? TFT_YELLOW : red);
       d.setCursor(20, 30);
-      d.printf("%.0f%%", id(state_of_charge).get_raw_state());
+      d.printf("%.0f%%", soc);
 
       d.setTextSize(2);
       d.setTextColor(white);
@@ -200,7 +202,7 @@ lovy_panel_st7789_i80:
       d.printf(" ~%.3f V", id(delta_cell_voltage).state);
 
       if (id(balance_current).state != 0.) {
-        d.setTextColor(TFT_YELLOW);
+        d.setTextColor(cyan);
         d.setCursor(200, 120);
         d.printf("Bal %.1f A", id(balance_current).state);
       }
