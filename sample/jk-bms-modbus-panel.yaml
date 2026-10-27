@@ -141,7 +141,7 @@ lovy_panel_st7789_i80:
     d.setTextDatum(MC_DATUM);
     d.setTextSize(2);
 
-    if (isnan(id(state_of_charge).get_state())) {
+    if (isnan(id(state_of_charge).state)) {
       // --- Waiting connection ---
       d.setTextColor(red, TFT_BLACK);
       d.setCursor(80, 30);
@@ -163,24 +163,24 @@ lovy_panel_st7789_i80:
       d.setTextSize(2);
       d.setTextColor(white);
       d.setCursor(30, 60);
-      d.printf("BMS %.1f c", id(mosfet_temperature).get_state());
+      d.printf("BMS %.1f c", id(mosfet_temperature).state);
 
       d.setTextColor(white);
       d.setCursor(30, 90);
-      d.printf("BAT %.1f c", id(temperature_1).get_state());
+      d.printf("BAT %.1f c", id(temperature_1).state);
 
       d.setTextColor(gray);
       d.setCursor(30, 120);
-      d.printf("T.2 %.1f c", id(temperature_2).get_state());
+      d.printf("T.2 %.1f c", id(temperature_2).state);
 
       d.setTextSize(3);
-      auto powr = id(total_power).get_state();
+      auto powr = id(total_power).state;
       d.setTextColor(powr < 0 ? red : green);
       d.setCursor(30, 180);
       d.printf("%.0fW", abs(powr));
 
       d.setTextSize(2);
-      auto curr = id(current).get_state();
+      auto curr = id(current).state;
       d.setTextColor(curr < 0 ? red : green);
       d.setCursor(30, 210);
       d.printf("%.2fA", abs(curr));
@@ -188,16 +188,27 @@ lovy_panel_st7789_i80:
       d.setTextSize(3);
       d.setTextColor(white);
       d.setCursor(200, 30);
-      d.printf("%.2fV", id(total_voltage).get_state());
+      d.printf("%.2fV", id(total_voltage).state);
 
       d.setTextSize(2);
       d.setTextColor(gray);
       d.setCursor(200, 60);
-      d.printf(" %.3f V", id(average_cell_voltage).get_state());
+      d.printf("  %.3f V", id(average_cell_voltage).state);
 
       d.setTextColor(gray);
       d.setCursor(200, 90);
-      d.printf("~%.3f V", id(delta_cell_voltage).get_state());
+      d.printf(" ~%.3f V", id(delta_cell_voltage).state);
+
+      if (id(balance_current).state != 0.) {
+        d.setTextColor(TFT_YELLOW);
+        d.setCursor(200, 120);
+        d.printf("Bal %.1f A", id(balance_current).state);
+      }
+      if (id(alarms_bitmask).state > 0) {
+        d.setTextColor(red);
+        d.setCursor(200, 150);
+        d.printf("! %06x", (uint) id(alarms_bitmask).state);
+      }
     }
 
     // runtime
@@ -1561,6 +1572,7 @@ sensor:
   - platform: modbus_controller
     modbus_controller_id: bms0
     name: "balance current"
+    id: balance_current
     address: 0x12A4
     register_type: holding
     value_type: S_WORD
