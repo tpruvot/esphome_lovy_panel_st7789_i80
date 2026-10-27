@@ -1,4 +1,5 @@
 ESPHome component to handle LovyanGFX esp-idf devices.
+---
 
 For now, ESPHome mipi display extensions don't handle i80 (8 bits parallel) protocol.
 
@@ -16,7 +17,7 @@ the pwm backlight from ESPHome, to avoid backlight when unused...
 
 Sample yaml is based on JK BMS modbus and show the display components integration to query a few entities.
 
-<img width="356" height="247" alt="image" src="https://github.com/user-attachments/assets/8a962b0d-9bad-4bb0-ad8f-ea27a49e4b89" />
+<img width="594" height="406" alt="WT32S3-JK-PB2A16S" src="https://github.com/user-attachments/assets/e091975c-6f57-436e-825c-78eeab21cca2" />
 
 Links
 -----
@@ -25,6 +26,7 @@ Datasheet: https://scribd.com/document/950059125/WT32S3-28S-PRO-ZX2D80CE02S-V1-0
 
 - https://github.com/lovyan03/LovyanGFX
 - https://components.espressif.com/components/espressif/esp_lcd_panel_io_additions/versions/1.0.1~1/readme
+- https://github.com/syssi/esphome-jk-bms
 - https://doc.panel-tag.cn/ESP32-S3/index.html
 - https://github.com/smartpanle/QMSD-ESP32-BSP
 - https://gitee.com/qiming-zhixian/qmsd-esp32-bsp
