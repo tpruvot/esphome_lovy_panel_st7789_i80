@@ -64,51 +64,49 @@ external_components:
       path: .
     components: [ lovy_panel_st7789_i80 ]
 
-# Display backlight as an ESPHome dimmable Light
+# Display backlight as Gradient Light
+
+globals:
+  - id: display_sleep
+    type: bool
+    restore_value: yes
+    initial_value: "false"
+  - id: last_backlight_level
+    type: uint8_t
+    initial_value: "90"
+
 output:
   - platform: ledc
     id: backlight_output
     pin: GPIO47
-    frequency: 150Hz
+    frequency: 500Hz
     min_power: 0.01
+    max_power: 0.40
     zero_means_zero: true
 
-light:
-  - platform: monochromatic
-    name: Backlight
-    id: display_backlight
-    output: backlight_output
-    restore_mode: RESTORE_DEFAULT_ON
-    default_transition_length: 500ms
-    on_turn_on:
+number:
+  - platform: template
+    id: backlight_level
+    name: "Backlight"
+    optimistic: true
+    min_value: 0
+    max_value: 100
+    step: 5
+    initial_value: 50
+    restore_value: true
+    retain: true
+    icon: "mdi:lightbulb-on-outline"
+    unit_of_measurement: "%"
+    on_value:
       then:
-        - lambda: id(display_sleep) = false;
-    on_turn_off:
-      then:
-        - lambda: id(display_sleep) = true;
+        - lambda: |-
+            id(display_sleep) = (x == 0);
+            if (x != 0) id(last_backlight_level) = x;
+        - output.set_level:
+            id: backlight_output
+            level: !lambda "return x / 100.0;"
 
 # Panel WT32S3-28S Pro ST7789 (320x240)
-
-# BL_PWM  GPIO47 Backlight control
-# LCD_RST GPIO03 LCD reset, multiplexed with touch reset
-# LCD_RS  GPIO18 Command/data selection (CD)
-# LCD_WR  GPIO17 Write the clock
-# LCD_TE  GPIO38 Frame synchronization (optional interrupt)
-
-# LCD_D0 GPIO16 LCD data interface, 8-bit mcu(8080)
-# LCD_D1 GPIO40
-# LCD_D2 GPIO15
-# LCD_D3 GPIO07
-# LCD_D4 GPIO41
-# LCD_D5 GPIO42
-# LCD_D6 GPIO02
-# LCD_D7 GPIO01
-
-# TP_INT  GPIO48 Touch Interrupt
-# TP_SDA  GPIO08 Touch IIC data
-# TP_SCL  GPIO09 Touch the IIC clock
-# TP_RST  GPIO03 Touch reset, multiplexed with LCD reset
-
 
 lovy_panel_st7789_i80:
   id: display0
@@ -116,7 +114,7 @@ lovy_panel_st7789_i80:
   lambda: |-
     if (id(display_sleep) && it->touched) {
       id(display_sleep) = false;
-      id(backlight_output).turn_on();
+      id(backlight_output).set_level(id(last_backlight_level));
     }
 
     if (id(display_sleep)) return;
@@ -225,12 +223,6 @@ lovy_panel_st7789_i80:
     it->startWrite();
     d.pushSprite(0, 0);
     it->endWrite();
-
-globals:
-  - id: display_sleep
-    type: bool
-    restore_value: yes
-    initial_value: "false"
 
 # TODO: spiffs filesystem to include custom fonts:
 # http_request:
