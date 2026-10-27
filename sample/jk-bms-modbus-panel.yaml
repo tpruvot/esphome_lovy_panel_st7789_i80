@@ -62,7 +62,7 @@ external_components:
   - source:
       type: local
       path: .
-    components: [ lovy_panel_st7789 ]
+    components: [ lovy_panel_st7789_i80 ]
 
 # Display backlight as an ESPHome dimmable Light
 output:
@@ -109,7 +109,7 @@ light:
 # TP_SCL  GPIO09 Touch the IIC clock
 # TP_RST  GPIO03 Touch reset, multiplexed with LCD reset
 
-lovy_panel_st7789:
+lovy_panel_st7789_i80:
   id: display0
   update_interval: 1000ms
   lambda: |-

@@ -6,7 +6,7 @@
 #include <LovyanGFX.hpp>
 #include <functional>
 
-namespace lovy_panel_st7789 {
+namespace lovy_panel_st7789_i80 {
 
 class Panel_ST7789_I80 : public esphome::PollingComponent, public lgfx::LGFX_Device {
 
@@ -145,4 +145,4 @@ public:
 // sprite buffer to reduce flickering
 extern lgfx::LGFX_Sprite canvas;
 
-} // namespace lovy_panel_st7789
+} // namespace lovy_panel_st7789_i80

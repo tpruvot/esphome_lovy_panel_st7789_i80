@@ -2,9 +2,9 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_LAMBDA
 
-DOMAIN = "lovy_panel_st7789"
+DOMAIN = "lovy_panel_st7789_i80"
 
-ns = cg.esphome_ns.namespace("lovy_panel_st7789")
+ns = cg.esphome_ns.namespace(DOMAIN)
 Panel_ST7789_I80 = ns.class_("Panel_ST7789_I80", cg.PollingComponent)
 
 CONFIG_SCHEMA = cv.Schema({
