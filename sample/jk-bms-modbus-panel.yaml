@@ -373,7 +373,6 @@ sensor:
     address: 0x1000
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -388,7 +387,6 @@ sensor:
     address: 0x1004
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -403,7 +401,6 @@ sensor:
     address: 0x1008
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -418,7 +415,6 @@ sensor:
     address: 0x100C
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -433,7 +429,6 @@ sensor:
     address: 0x1010
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -448,7 +443,6 @@ sensor:
     address: 0x1014
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -463,7 +457,6 @@ sensor:
     address: 0x1018
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -478,7 +471,6 @@ sensor:
     address: 0x101C
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -493,7 +485,6 @@ sensor:
     address: 0x1020
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -508,7 +499,6 @@ sensor:
     address: 0x1024
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -523,7 +513,6 @@ sensor:
     address: 0x1028
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -538,7 +527,6 @@ sensor:
     address: 0x102C
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "A"
     device_class: current
     state_class: measurement
@@ -553,7 +541,6 @@ sensor:
     address: 0x1030
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "S"
     device_class: duration
     state_class: measurement
@@ -566,7 +553,6 @@ sensor:
     address: 0x1034
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "S"
     device_class: duration
     state_class: measurement
@@ -579,7 +565,6 @@ sensor:
     address: 0x1038
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "A"
     device_class: current
     state_class: measurement
@@ -594,7 +579,6 @@ sensor:
     address: 0x103C
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "S"
     device_class: duration
     state_class: measurement
@@ -607,7 +591,6 @@ sensor:
     address: 0x1040
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "S"
     device_class: duration
     state_class: measurement
@@ -620,7 +603,6 @@ sensor:
     address: 0x1044
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "S"
     device_class: duration
     state_class: measurement
@@ -633,7 +615,6 @@ sensor:
     address: 0x1048
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "A"
     device_class: current
     state_class: measurement
@@ -648,7 +629,6 @@ sensor:
     address: 0x104C
     register_type: holding
     value_type: S_DWORD
-    # skip_updates to replace
     unit_of_measurement: "°C"
     device_class: temperature
     state_class: measurement
@@ -663,7 +643,6 @@ sensor:
     address: 0x1050
     register_type: holding
     value_type: S_DWORD
-    # skip_updates to replace
     unit_of_measurement: "°C"
     device_class: temperature
     state_class: measurement
@@ -678,7 +657,6 @@ sensor:
     address: 0x1054
     register_type: holding
     value_type: S_DWORD
-    # skip_updates to replace
     unit_of_measurement: "°C"
     device_class: temperature
     state_class: measurement
@@ -693,7 +671,6 @@ sensor:
     address: 0x1058
     register_type: holding
     value_type: S_DWORD
-    # skip_updates to replace
     unit_of_measurement: "°C"
     device_class: temperature
     state_class: measurement
@@ -708,7 +685,6 @@ sensor:
     address: 0x105C
     register_type: holding
     value_type: S_DWORD
-    # skip_updates to replace
     unit_of_measurement: "°C"
     device_class: temperature
     state_class: measurement
@@ -723,7 +699,6 @@ sensor:
     address: 0x1060
     register_type: holding
     value_type: S_DWORD
-    # skip_updates to replace
     unit_of_measurement: "°C"
     device_class: temperature
     state_class: measurement
@@ -738,7 +713,6 @@ sensor:
     address: 0x1064
     register_type: holding
     value_type: S_DWORD
-    # skip_updates to replace
     unit_of_measurement: "°C"
     device_class: temperature
     state_class: measurement
@@ -753,7 +727,6 @@ sensor:
     address: 0x1068
     register_type: holding
     value_type: S_DWORD
-    # skip_updates to replace
     unit_of_measurement: "°C"
     device_class: temperature
     state_class: measurement
@@ -771,7 +744,6 @@ sensor:
     icon: "mdi:battery-arrow-up-outline"
     state_class: total
     accuracy_decimals: 0
-    # skip_updates to replace
 
   # 0x107C 124 UINT32 4 RW    CapBatCell       mAH
   - platform: modbus_controller
@@ -780,7 +752,6 @@ sensor:
     address: 0x107C
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: Ah
     device_class: energy_storage
     state_class: measurement
@@ -795,7 +766,6 @@ sensor:
     address: 0x1080
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "uS"
     device_class: duration
     state_class: measurement
@@ -808,7 +778,6 @@ sensor:
     address: 0x1084
     register_type: holding
     value_type: U_DWORD
-    # skip_updates to replace
     unit_of_measurement: "V"
     device_class: voltage
     state_class: measurement
@@ -1870,7 +1839,6 @@ sensor:
     address: 0x1504
     register_type: holding
     value_type: U_WORD
-    # skip_updates to replace
     unit_of_measurement: "H"
     device_class: duration
     state_class: measurement
@@ -1884,7 +1852,6 @@ sensor:
     address: 0x1504
     register_type: holding
     value_type: U_WORD
-    # skip_updates to replace
     unit_of_measurement: "H"
     device_class: duration
     state_class: measurement
