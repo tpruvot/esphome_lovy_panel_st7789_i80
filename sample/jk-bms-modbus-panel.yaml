@@ -1,26 +1,13 @@
-# Note:
-# If you have only 8 cells - comment out "cell voltage 9-16" and "cell 9-16 wire resistance".
+# Tested ok on two types of JK BMS (B1A8S v15 and PB2A16S v19)
 #
-# Some configuration details:
-#
-# JK Modbus protocol is not the same as standard Modbus RTU.
-# The register addresses of the JK BMS are byte offsets: "Smart sleep" (4 bytes) is located at 0x1000,
-# "Cell UVP" at 0x1004. The response of the BMS contains the values without any gaps.
-# The modbus_controller component assumes 16-bit registers and is unable to merge such entities into
-# a single request. Each entity is read with its own request therefore.
-#
-# The "max/min cell voltage" and "max/min voltage cell" sensors read the whole cell voltage block (64 bytes)
-# with one request and parse it via lambda. `reuse_previous_range: false` prevents the following cell voltage
-# sensors from being merged into this block (their offsets would be calculated wrong).
-#
-# To reduce the number of requests the charging, discharging and balancing binary_sensors are defined as templates
-# and their values are updated based on the regular sensors (`disabled_by_default: true`).
+# To note, the RS485/RJ45 panel of these BMS are not the same (PB2A one come with an extra RS232 RJ11)
+# - On the B1A8S with 3 RS485 and a CAN port, use the first one RS485-1...
+# - On the PB2A, use the second one, RS485-2.
+# The first BMS connection may take a few seconds or minutes, be patient.
 
 substitutions:
-  name: jk-easun-r-modbus
+  name: jk-bms-modbus-panel-i80
   device_description: "JK-B1A8S-BMS v15 Display Panel via Modbus (RS485-1)"
-  # external_components_source: github://syssi/esphome-jk-bms@main
-  external_components_source: github://tpruvot/esphome-jk-bms@dev
   rx_pin: GPIO04
   tx_pin: GPIO06 # B A Gnd to RJ45 1 2 3
   flow_control_pin: GPIO05
@@ -28,7 +15,7 @@ substitutions:
   max_cells: 8
   device_addr: "1"    # NOTE: On change also update the first byte in `switch` custom_command and write_lambda
   modbus_controller_update_interval: "15s"
-  bms_control_params_slow_updates: 600s   # todo: skip some conf readings
+  bms_control_params_slow_updates: 600s   # todo: skip some conf readings with update_interval
 
 esp32:
   board: esp32-s3-devkitc1-n8r2
@@ -50,7 +37,7 @@ esphome:
   comment: ${device_description}
   min_version: "2026.10.0"
   project:
-    name: "syssi.esphome-jk-bms"
+    name: "panel.esphome-jk-bms"
     version: 3.0.0
 
   includes:
@@ -2015,4 +2002,3 @@ text_sensor:
     icon: "mdi:ip-outline"
     lambda: |-
       return id(wifi_ip).state;
-
