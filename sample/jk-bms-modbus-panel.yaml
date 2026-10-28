@@ -752,10 +752,9 @@ sensor:
     address: 0x107C
     register_type: holding
     value_type: U_DWORD
-    unit_of_measurement: Ah
-    #device_class: energy_storage
+    unit_of_measurement: "Ah"
     state_class: measurement
-    accuracy_decimals: 0
+    accuracy_decimals: 1
     filters:
       - multiply: 0.001
 
@@ -1027,7 +1026,6 @@ sensor:
     device_class: voltage
     state_class: measurement
     accuracy_decimals: 3
-    # remember to adjust cells count in the loop
     lambda: |-
       uint16_t max_voltage = 0;
       for (int i = 0; i < ${max_cells}; i++) {
@@ -1035,6 +1033,7 @@ sensor:
         if ((cell_voltage > max_voltage) && (cell_voltage < 10000))
           max_voltage = cell_voltage;
       }
+      if (max_voltage == 0) return NAN;
       return max_voltage * 0.001f;
 
   - platform: modbus_controller
@@ -1049,7 +1048,6 @@ sensor:
     device_class: voltage
     state_class: measurement
     accuracy_decimals: 3
-    # remember to adjust cells count in the loop
     lambda: |-
       uint16_t min_voltage = 0xFFFF;
       for (int i = 0; i < ${max_cells}; i++) {
@@ -1057,6 +1055,7 @@ sensor:
         if ((cell_voltage > 1000) && (cell_voltage < min_voltage))
           min_voltage = cell_voltage;
       }
+      if (min_voltage == 0xFFFF) return NAN;
       return min_voltage * 0.001f;
 
   # 0x1248   72    UINT8/UINT8 2  R    MaxVolCellNbr / MinVolCellNbr
@@ -1071,7 +1070,6 @@ sensor:
     unit_of_measurement: ""
     state_class: measurement
     accuracy_decimals: 0
-    # remember to adjust cells count in the loop
     lambda: |-
       uint16_t max_voltage = 0;
       uint8_t max_cell = 0;
@@ -1082,6 +1080,7 @@ sensor:
           max_cell = i + 1;
         }
       }
+      if (max_voltage == 0) return NAN;
       return (float) max_cell;
 
   - platform: modbus_controller
@@ -1095,7 +1094,6 @@ sensor:
     unit_of_measurement: ""
     state_class: measurement
     accuracy_decimals: 0
-    # remember to adjust cells count in the loop
     lambda: |-
       uint16_t min_voltage = 0xFFFF;
       uint8_t min_cell = 0;
@@ -1106,6 +1104,7 @@ sensor:
           min_cell = i + 1;
         }
       }
+      if (min_voltage == 0xFFFF) return NAN;
       return (float) min_cell;
 
   # 0x1240   64    UINT32    4    R    CellStatus    (each bit indicates a attached cell)
@@ -1590,9 +1589,8 @@ sensor:
     register_type: holding
     value_type: U_DWORD
     state_class: measurement
-    #device_class: energy_storage
     unit_of_measurement: "Ah"
-    accuracy_decimals: 0
+    accuracy_decimals: 1
     filters:
       - multiply: 0.001
 
@@ -1604,9 +1602,8 @@ sensor:
     register_type: holding
     value_type: U_DWORD
     state_class: measurement
-    #device_class: energy_storage
     unit_of_measurement: "Ah"
-    accuracy_decimals: 0
+    accuracy_decimals: 1
     filters:
       - multiply: 0.001
 
@@ -1629,7 +1626,7 @@ sensor:
     value_type: U_DWORD
     state_class: measurement
     unit_of_measurement: "Ah"
-    accuracy_decimals: 0
+    accuracy_decimals: 1
     filters:
       - multiply: 0.001
 
