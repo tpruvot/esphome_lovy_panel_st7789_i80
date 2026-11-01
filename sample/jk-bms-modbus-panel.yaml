@@ -40,11 +40,8 @@ esphome:
   project:
     name: "panel.esphome-jk-bms"
     version: 3.0.0
-
-  includes:
-    - lovy_panel_st7789_i80/panel_st7789.hpp
   libraries:
-    - LovyanGFX=https://github.com/lovyan03/LovyanGFX@1.2.35
+    - LovyanGFX=https://github.com/lovyan03/LovyanGFX@1.2.36
 
 external_components:
   - source:
