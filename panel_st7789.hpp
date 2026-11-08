@@ -125,6 +125,17 @@ public:
     }
   }
 
+  void sleep() {
+    // We wake up backlight with touch, avoid touch screen deep sleep
+    //_touch_instance.sleep();
+    _panel_instance.setSleep(1);
+  }
+
+  void wakeup() {
+    _panel_instance.setSleep(0);
+    //_touch_instance.wakeup();
+  }
+
   void loop() override {
     if (this->touch_triggered_) {
       this->touch_triggered_ = false;

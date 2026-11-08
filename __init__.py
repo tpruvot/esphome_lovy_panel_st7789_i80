@@ -2,13 +2,15 @@ import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_LAMBDA
 
+CODEOWNERS = ["@tpruvot"]
 DOMAIN = "lovy_panel_st7789_i80"
+
+# SC02 ST7789 320x240 With Touchscreen FT5x06
 
 ns = cg.esphome_ns.namespace(DOMAIN)
 Panel_ST7789_I80 = ns.class_("Panel_ST7789_I80", cg.PollingComponent)
 
 CONFIG_SCHEMA = cv.Schema({
-
     cv.GenerateID(): cv.declare_id(Panel_ST7789_I80),
     cv.Optional(CONF_LAMBDA): cv.lambda_,
 

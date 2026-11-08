@@ -98,6 +98,7 @@ lovy_panel_st7789_i80:
   update_interval: 1000ms
   lambda: |-
     if (id(display_sleep) && it->touched) {
+      it->wakeup();
       id(display_sleep) = false;
       id(backlight_output).set_level(id(last_backlight_level));
     }
@@ -219,6 +220,7 @@ lovy_panel_st7789_i80:
       d.fillRect(200, 180, 100, 40, blue);
       d.setTextColor(TFT_BLACK);
       id(backlight_output).set_level(0);
+      it->sleep();
       id(display_sleep) = true;
     } else {
       d.setTextColor(white);
