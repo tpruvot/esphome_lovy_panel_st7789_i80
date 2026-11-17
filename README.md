@@ -3,6 +3,8 @@ ESPHome component to handle LovyanGFX esp-idf devices.
 
 For now, ESPHome mipi display extensions don't handle i80 (8 bits parallel) protocol.
 
+**Update**: I was wrong, this protocol is named octal spi in ESPHome and this display is fully compatible with current 2026.10.2 stable version. (mipi_spi display with model ST7789V and touchscreen i2c platform ft63x6 at address 0x38)
+
 Made for my own use with a JK BMS modbus, this RS485 panel board is based on a ESP32 S3 (8MB)
 with a display ST7789. Full ref on the PCB is PanelLan ZX2D80CE02S-10 but its sold also as
 WT32S3-28S Pro, 28 means 2.8". It may be seen with the 2432 suffix for the resolution 320x240.
